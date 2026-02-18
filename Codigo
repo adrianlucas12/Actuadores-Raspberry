@@ -1,49 +1,43 @@
+import random
+import os
 import time
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 
-Puls = 4
+contrasenas = {'color':'azul','flor':'amapola','animal':'perro','ciudad':'madrid','col$
+puls = 4
 LEDA = 17
 LEDR = 22
-Zumb = 10
 
-GPIO.setup(4,GPIO.IN)
-GPIO.setup(17,GPIO.OUT)
-GPIO.setup(22,GPIO.OUT)
-GPIO.setup(10,GPIO.OUT)
-
-cuenta = 0
-contraseña = "1234"
+GPIO.setup(puls,GPIO.IN)
+GPIO.setup(LEDA,GPIO.OUT)
+GPIO.setup(LEDR,GPIO.OUT)
 
 while True:
-    if GPIO.input(Puls) == True:
-        cuenta = cuenta +1
-        if cuenta == 1:
-            GPIO.output(LEDA, True)
-            time.sleep(1)
-        elif cuenta == 2:
-            GPIO.output(LEDA, False)
-            GPIO.output(LEDR, True)
-            time.sleep(1)
-        else:
-            GPIO.output(LEDR, False)
-            GPIO.output(Zumb, True)
-            time.sleep(5)
-            GPIO.output(Zumb, False)
-            clave = input("Introduzca la contraseña: ")
-            if contraseña == "1234" and contraseña == clave:
-                print("Alarma desactivada")
-            while True:
-                contraseña = input("Escriba una nueva contraseña: ")
-                if len(contraseña) < 6 or contraseña.isalnum() == True:
-                    print("Contraseña no válida")
+
+        GPIO.output(LEDA,False)
+        GPIO.output(LEDR,False)
+
+        if GPIO.input(puls) == True:
+
+                GPIO.output(LEDA,True)
+                num = random.randint(0,4)
+                pos = list(contrasenas.keys())[num]
+                clave = input(list(contrasenas.keys())[num])
+                if clave == list(contrasenas.values())[num]:
+
+                        print ("Clave correcta")
+                        GPIO.output(LEDA,False)
+                        time.sleep(1)
+
                 else:
-                    break
-            cuenta = 0
-        elif clave == contraseña:
-            print("Alarma desactivada")
-            cuenta = 0
+
+                        GPIO.output(LEDR,True)
+                        os.system('cp llamada.call l.call')
+                        os.system('mv l.call /var/spool/asterisk/outgoing')
+                        time.sleep(8)
+
         else:
-            print("Avisando a la policia")
-            cuenta = 0
-    time.sleep(2)
+
+                print ("No se detecta movimiento")
+                time.sleep(1)
