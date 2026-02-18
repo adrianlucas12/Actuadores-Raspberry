@@ -12,4 +12,38 @@ GPIO.setup(17,GPIO.OUT)
 GPIO.setup(22,GPIO.OUT)
 GPIO.setup(10,GPIO.OUT)
 
-lo que sea
+cuenta = 0
+contraseña = "1234"
+
+while True:
+    if GPIO.input(Puls) == True:
+        cuenta = cuenta +1
+        if cuenta == 1:
+            GPIO.output(LEDA, True)
+            time.sleep(1)
+        elif cuenta == 2:
+            GPIO.output(LEDA, False)
+            GPIO.output(LEDR, True)
+            time.sleep(1)
+        else:
+            GPIO.output(LEDR, False)
+            GPIO.output(Zumb, True)
+            time.sleep(5)
+            GPIO.output(Zumb, False)
+            clave = input("Introduzca la contraseña: ")
+            if contraseña == "1234" and contraseña == clave:
+                print("Alarma desactivada")
+            while True:
+                contraseña = input("Escriba una nueva contraseña: ")
+                if len(contraseña) < 6 or contraseña.isalnum() == True:
+                    print("Contraseña no válida")
+                else:
+                    break
+            cuenta = 0
+        elif clave == contraseña:
+            print("Alarma desactivada")
+            cuenta = 0
+        else:
+            print("Avisando a la policia")
+            cuenta = 0
+    time.sleep(2)
