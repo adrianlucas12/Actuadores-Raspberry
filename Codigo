@@ -11,3 +11,5 @@ GPIO.setup(4,GPIO.IN)
 GPIO.setup(17,GPIO.OUT)
 GPIO.setup(22,GPIO.OUT)
 GPIO.setup(10,GPIO.OUT)
+
+lo que sea
